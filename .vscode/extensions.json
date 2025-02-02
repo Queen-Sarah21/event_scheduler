@@ -1,5 +1,10 @@
 {
     "recommendations": [
-        "ms-vscode-remote.remote-wsl"
+        "ms-vscode-remote.remote-wsl",
+        "esbenp.prettier-vscode",
+        "mrmlnc.vscode-scss",
+        "sibiraj-s.vscode-scss-formatter",
+        "pkief.material-icon-theme",
+        "ritwickdey.liveserver"
     ]
 }
