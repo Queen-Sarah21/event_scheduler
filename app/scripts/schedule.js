@@ -4,22 +4,40 @@ document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('event-form');
    // const eventList = document.getElementById('event-list');
 
-    form.addEventListener('submit', (e) => {
-        e.preventDefault();
-
+   if(form) {
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
         // Get input values
-        const title = document.getElementById('event-title').value;
-        const date = document.getElementById('event-date').value;
-        const description = document.getElementById('event-description').value;
+            const title = document.getElementById('title').value;
+            const date = document.getElementById('date').value;
+            const description = document.getElementById('description').value;
 
-        if (title && date && description) {
-            // Create event item
-            const li = document.createElement('li');
-            li.innerHTML = `<strong>${title}</strong> - ${date}<br>${description}`;
-           // eventList.appendChild(li);
+      const eventData = {
+          title,
+          date,
+          description
+        };
 
-            // Clear form
-            form.reset();
-        }
-    });
+        try {
+
+            const res = await fetch('http://localhost:3001/api/schedule', {
+              method: 'POST',
+              headers: {
+                'Content-Type' : 'application/json'
+              },
+              body: JSON.stringify(eventData) //to send to the connection
+            });
+            if(res.ok){
+              alert('Event scheduled successfully!');
+              form.reset();
+            }else{
+              const errorData = await res.json();
+              alert(`Error: ${errorData.error}`)
+            }
+          } catch (error) {
+              console.error(`Error: ${error}`);
+              alert('An error occured while scheduling the eventData.');   
+          }
+        })
+    }
 });
