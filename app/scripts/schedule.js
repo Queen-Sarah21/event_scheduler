@@ -1,7 +1,5 @@
 import './../scss/schedule.scss';
 
-
-// Create event
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('event-form');
    // const eventList = document.getElementById('event-list');
@@ -22,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
 
-            const res = await fetch('http://localhost:3001/api/schedule', {
+            const res = await fetch('http://localhost:3000/api/schedule', {
               method: 'POST',
               headers: {
                 'Content-Type' : 'application/json'
@@ -102,3 +100,4 @@ async function filterEventsByDate() {
     alert('An error occured while filtering events.');
   }
 }
+
