@@ -1,7 +1,5 @@
 import './../scss/schedule.scss';
 
-
-// Create event
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('event-form');
    // const eventList = document.getElementById('event-list');
@@ -22,7 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         try {
 
-            const res = await fetch('http://localhost:3001/api/schedule', {
+            const res = await fetch('http://localhost:3000/api/schedule', {
               method: 'POST',
               headers: {
                 'Content-Type' : 'application/json'
@@ -43,41 +41,3 @@ document.addEventListener('DOMContentLoaded', () => {
         })
     }
 });
-
-//Remove Event
-document.addEventListener('DOMContentLoaded', () =>{
-  const form = document.getElementById('delete-event-form');
-
-  if(form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const eventId = document.getAnimations('event-id').values;
-
-      if (!eventId) {
-        alert('Please enter a valid event ID.');
-        return;
-      }
-
-      try {
-        const res = await fetch(`http://localhost:3001/api/schedule/${eventId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (res.ok) {
-          alert('Event deleted successfully!');
-          form.reset();
-        } else {
-          const errorData = await res.json();
-          alert(`Error: ${errorData.error}`);
-        }
-      } catch (error) {
-        console.error(`Error: ${error}`);
-        alert('An error occured while deleting the event.')
-      }
-    })
-  }
-})
