@@ -45,49 +45,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 //Remove Event
-document.addEventListener('DOMContentLoaded', () =>{
-  const form = document.getElementById('delete-event-form');
-  const filterForm = document,getElementById('filter-event-form');
-  if(form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
+async function deleteEvent() {
+  const eventId = document,getElementById('event-id').value;
 
-      const eventId = document.getAnimations('event-id').values;
-
-      if (!eventId) {
-        alert('Please enter a valid event ID.');
-        return;
-      }
-
-      try {
-        const res = await fetch(`http://localhost:3001/api/schedule/${eventId}`, {
-          method: 'DELETE',
-          headers: {
-            'Content-Type': 'application/json'
-          }
-        });
-
-        if (res.ok) {
-          alert('Event deleted successfully!');
-          form.reset();
-        } else {
-          const errorData = await res.json();
-          alert(`Error: ${errorData.error}`);
-        }
-      } catch (error) {
-        console.error(`Error: ${error}`);
-        alert('An error occured while deleting the event.')
-      }
-    });
+  if (!eventId) {
+    alert('Please enter a valid event ID.');
+    return;
   }
 
-  if (filterForm) {
-    filterForm.addEventListener('submit', async (e) => {
-      e.preventDefault();
-      await filterEventsByDate();
+  try {
+    const res = await fetch(`http://localhost:3001/api/schedule/${eventId}`, {
+      method: 'DELETE',
+      headers: { 'Content-Type': 'application/json' }
     });
+
+    if (res.ok) {
+      alert('Event deleted successully!');
+      document.getElementById('delete-event-form').reset();
+    } else {
+      const errorData = await res.json();
+      alert(`Error: ${errorData.error}`);
+    }
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    alert('An error occured while deleting the event.');
   }
-});
+}
 
 // Filter event by date function
 async function filterEventsByDate() {

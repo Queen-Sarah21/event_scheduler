@@ -72,7 +72,28 @@ app.get("/", async (req, res) => {
 });
 
 
-//
+// Delete event
+app.delete("/api/schedule/:id", async (req, res) => {
+    const { id } = req.params;
+
+    if (!id) {
+        return res.status(400).json({ error: "Event Id is required" });
+    }
+
+    try {
+        const conn = await mysql.createConnection(dbConfig);
+        const [result] = await conn.execute("DELETE FROM events WHERE id = ?", [id]);
+        await conn.end();
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: "Event not found" });
+        }
+
+        res.status(200).json({ message: "Event deleted successfully" });
+    } catch (error) {
+        res.status(500).json({ error: `Failed to delete event: ${error.message}` });
+    }
+});
 
 async function initDatabase() {
     try {
