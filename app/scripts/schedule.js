@@ -47,7 +47,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //Remove Event
 document.addEventListener('DOMContentLoaded', () =>{
   const form = document.getElementById('delete-event-form');
-
+  const filterForm = document,getElementById('filter-event-form');
   if(form) {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -78,6 +78,44 @@ document.addEventListener('DOMContentLoaded', () =>{
         console.error(`Error: ${error}`);
         alert('An error occured while deleting the event.')
       }
-    })
+    });
   }
-})
+
+  if (filterForm) {
+    filterForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      await filterEventsByDate();
+    });
+  }
+});
+
+// Filter event by date function
+async function filterEventsByDate() {
+  const filterDate = document.getElementById('filter-date').value;
+  const eventList = document.getElementById('event-list');
+
+  if (!filterDate) {
+    alert('Please enter a valid Date.');
+    return; 
+  }
+
+  try {
+    const events = await fetch(`http://localhost:3001/api/schedule?date=${filterDate}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (res.ok) {
+      const events = await res.json();
+      eventList.innerHTML = events.map(event => `<li>${event.title} - ${event.date}</li>`).join('');      
+    } else {
+      const errorData = await res.json();
+      alert(`Error: ${errorData.error}`);
+    }
+  } catch (error) {
+    console.error(`Error: ${error}`);
+    alert('An error occured while filtering events.');
+  }
+}
