@@ -12,7 +12,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     const fetchEvent = async () => {
         try {
-            const res = await fetch(`http://localhost:3000/api/schedule`);
+            const res = await fetch(`/api/schedule`);
             if (!res.ok) throw new Error("Failed to fetch event data");
 
             const events = await res.json();
@@ -47,7 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         try {
             console.log("Updating event with ID:", eventId); // Debugging
-            const res = await fetch(`http://localhost:3000/api/schedule/${eventId}`, {
+            const res = await fetch(`/api/schedule/${eventId}`, {
                 method: "PUT",
                 headers: {
                     "Content-Type": "application/json"

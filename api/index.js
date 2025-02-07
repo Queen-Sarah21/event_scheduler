@@ -1,29 +1,20 @@
 const express = require("express");
 const mysql = require("mysql2/promise");
-const cors = require('cors');
+const cors = require("cors");
+const dotenv = require("dotenv");
+const path = require('path')
+
+dotenv.config({ path: path.join(__dirname, ".env") });
 
 const app = express();
 app.use(cors());
 
-const port = 3000;
-
 const dbConfig = {
-    host: "localhost",
-    user: "root",
-    password: "123456",
-    database: "event-scheduler",
-    port: 3313
+    host: "127.0.0.1",
+    user: process.env.MARIADB_USER,
+    password: process.env.MARIADB_PASSWORD,
+    database: process.env.MARIADB_DATABASE
 };
-
-// JSON
-/*
-
-{
-    id: 1
-    name: "Allan"
-}
-
-*/
 
 app.use(express.json()); // express.json() => middleware 
 
@@ -101,7 +92,9 @@ app.post("/api/schedule", async (req, res) => { /// every time we want create so
     }
 });
 
-
+app.get("/api", async (req, res) => {
+    res.status(200).json({message: "Api running"});
+});
 //
 app.get("/api/schedule", async (req, res) => {
     try {
@@ -115,49 +108,9 @@ app.get("/api/schedule", async (req, res) => {
     }
 });
 
-
-//
-app.get("/", async (req, res) => {
-
-        res.status(200).json({message: "API now running"}); // array of objects with our data
-
+app.listen(port, () => {
+    console.log(`The server is running, PORT: ${process.env.API_PORT}`)
 });
 
-
-//
-
-async function initDatabase() {
-    try {
-        const conn = await mysql.createConnection(dbConfig);
-        const [tables] = await conn.query("SHOW TABLES like 'events'");
-
-        if(tables.length === 0){
-            const createTableQuery = `
-                CREATE TABLE events (
-                    id INT AUTO_INCREMENT PRIMARY KEY,
-                    title VARCHAR(200) NOT NULL,
-                    date DATE NOT NULL,
-                    description VARCHAR(100) NOT NULL,
-                    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-                );
-            `;
-
-            await conn.query(createTableQuery);
-            console.log("Table created");
-        }
-
-        await conn.end();
-
-    } catch (error) {
-        console.error("Database error ", error);
-        process.exit(1);
-    }
-}
-
-initDatabase().then(() => {
-    app.listen(port, () => {
-        console.log(`The server is running, PORT: ${port}`)
-    })
-})
 
 // promises: 2 states in promises ... reject(),  resolve()

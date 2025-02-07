@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const fetchSchedules = async () => {
         try {
-            const res = await fetch('http://localhost:3000/api/schedule');
+            const res = await fetch('/api/schedule');
             if (!res.ok) throw new Error("Failed");
 
             const schedules = await res.json();
@@ -61,7 +61,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         try {
-            const res = await fetch('http://localhost:3000/api/schedule');
+            const res = await fetch('/api/schedule');
             if (!res.ok) throw new Error("Failed");
 
             const schedules = await res.json();
@@ -81,7 +81,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const deleteSchedule = async (e) => {
         const id = e.target.getAttribute('data-id');
         try {
-            const res = await fetch(`http://localhost:3000/api/schedule/${id}`, {
+            const res = await fetch(`/api/schedule/${id}`, {
                 method: 'DELETE',
             });
 
