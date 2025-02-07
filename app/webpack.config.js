@@ -7,6 +7,7 @@ module.exports = {
     main: "./scripts/main.js",
     schedule: "./scripts/schedule.js",
     list: "./scripts/list.js",
+    edit: "./scripts/edit.js"
   },
   output: {
     path: path.resolve(__dirname, "dist"),
@@ -43,6 +44,11 @@ module.exports = {
       template: "./list.html",
       chunks: ["list"],
       filename: "list.html",
+    }),
+    new HtmlWebpackPlugin({
+      template: "./edit.html", // Add this configuration for edit.html
+      chunks: ["edit"],
+      filename: "edit.html",
     }),
   ],
   devServer: {
