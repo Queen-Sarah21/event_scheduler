@@ -18,6 +18,10 @@ const dbConfig = {
 
 app.use(express.json()); // express.json() => middleware 
 
+app.get("/api", async (req, res) => {
+    res.status(200).json({message: "Api running"});
+});
+
 // DELETE endpoint to remove an event
 app.delete("/api/schedule/:id", async (req, res) => {
     const { id } = req.params;
@@ -92,9 +96,7 @@ app.post("/api/schedule", async (req, res) => { /// every time we want create so
     }
 });
 
-app.get("/api", async (req, res) => {
-    res.status(200).json({message: "Api running"});
-});
+
 //
 app.get("/api/schedule", async (req, res) => {
     try {
@@ -108,9 +110,8 @@ app.get("/api/schedule", async (req, res) => {
     }
 });
 
-app.listen(port, () => {
-    console.log(`The server is running, PORT: ${process.env.API_PORT}`)
+app.listen(process.env.API_PORT, () => {
+    console.log(`The server is running, PORT: ${process.env.API_PORT}`);
 });
-
 
 // promises: 2 states in promises ... reject(),  resolve()
